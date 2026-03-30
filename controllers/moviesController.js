@@ -119,9 +119,34 @@ const updateMovie = async(req, res, id) => {
         res.end(JSON.stringify({ error: 'Server error' }));
     }
 };
+// DELETE /movies/:id
+const deleteMovie = async(req, res, id) => {
+    try {
+        const movies = await readMovies();
+
+        const index = movies.findIndex(m => Number(m.id) === id);
+
+        if (index === -1) {
+            res.statusCode = 404;
+            return res.end(JSON.stringify({ error: 'Movie not found' }));
+        }
+
+        const deleted = movies.splice(index, 1);
+
+        await writeMovies(movies);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(deleted[0]));
+
+    } catch (error) {
+        res.statusCode = 500;
+        res.end(JSON.stringify({ error: 'Server error' }));
+    }
+};
 module.exports = {
     getMovies,
     getMovieById,
     createMovie,
-    updateMovie
+    updateMovie,
+    deleteMovie
 };

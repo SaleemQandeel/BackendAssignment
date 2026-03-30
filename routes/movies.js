@@ -3,7 +3,8 @@ const {
     getMovies,
     getMovieById,
     createMovie,
-    updateMovie
+    updateMovie,
+    deleteMovie
 } = require('../controllers/moviesController');
 
 const moviesRoute = (req, res) => {
@@ -14,7 +15,6 @@ const moviesRoute = (req, res) => {
     const id = idMatch ? parseInt(idMatch[1]) : null;
 
     switch (true) {
-
         // GET /movies/:id
         case method === 'GET' && id !== null:
             return getMovieById(req, res, id);
@@ -27,6 +27,9 @@ const moviesRoute = (req, res) => {
             // PATCH /movies/:id
         case method === 'PATCH' && id !== null:
             return updateMovie(req, res, id);
+            // DELETE /movies/:id
+        case method === 'DELETE' && id !== null:
+            return deleteMovie(req, res, id);
         default:
             res.statusCode = 404;
             res.setHeader('Content-Type', 'application/json');
