@@ -1,7 +1,9 @@
 const url = require('url');
 const {
     getMovies,
-    getMovieById
+    getMovieById,
+    createMovie,
+    updateMovie
 } = require('../controllers/moviesController');
 
 const moviesRoute = (req, res) => {
@@ -16,11 +18,15 @@ const moviesRoute = (req, res) => {
         // GET /movies/:id
         case method === 'GET' && id !== null:
             return getMovieById(req, res, id);
-
             // GET /movies
         case method === 'GET' && path === '/movies':
             return getMovies(req, res);
-
+            //POST /movies
+        case method === 'POST' && path === '/movies':
+            return createMovie(req, res);
+            // PATCH /movies/:id
+        case method === 'PATCH' && id !== null:
+            return updateMovie(req, res, id);
         default:
             res.statusCode = 404;
             res.setHeader('Content-Type', 'application/json');
